@@ -1,13 +1,47 @@
-body {
+*{
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  padding: 0;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New';
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.home-container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+header{
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  background-color: #f0ffff;
+  border: 1px solid gray;
+  box-sizing: border-box;
+  z-index: 100;
+}
+.header-title{
+  margin-left: 1.6vw;
+  font-size: large;
+  font-weight: 800;
+  /* letter-spacing: 1px; */
+  text-shadow: -1px 2px 4px lightgray;
+}
+.add-task{
+  margin-right: 1.6vw;
+  padding: 10px 15px 10px 15px;
+  font-size: large;
+  font-weight: 800;
+  border: .5px solid lightgray;
+  border-radius: 5px;
+  box-shadow: -1px 2px 4px lightgray;
+  box-sizing: border-box;
+  cursor: pointer;
 }
