@@ -1,41 +1,44 @@
 import { PinDropSharp } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
-import DatePickers from './DatePickers';
-// import DatePicker from "react-datepicker";
-const getLocalItems =() =>{
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+const getLocalItems = () => {
     let getTasks = localStorage.getItem('TaskItems');
     console.log(" update local data", getTasks);
-     if(getTasks){
-         return JSON.parse(localStorage.getItem('TaskItems'))
-     }else{
-         return [];
-     } 
+    if (getTasks) {
+        return JSON.parse(localStorage.getItem('TaskItems'))
+    } else {
+        return [];
+    }
 }
 const AddTaskModal = (props) => {
-   
+    const [startDate, setStartDate] = useState(new Date(2021, 10))
     const [tasks, setTasks] = useState(getLocalItems())
     const [data, setData] = useState({
         title: "",
         description: "",
         day: ""
     })
+
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setData({...data, [name]:value})
-        
-        }
-    const handleSubmitTask =(e)=>{
+        const { name, value } = e.target;
+        setData({ ...data, [name]: value })
+
+    }
+
+    const handleSubmitTask = (e) => {
         e.preventDefault();
         setTasks([...tasks, data])
-        console.log("data", tasks)
+        // console.log("data", tasks)
     }
-    useEffect(()=>{
+
+    useEffect(() => {
         localStorage.setItem('TaskItems', JSON.stringify(tasks))
     }, [tasks])
 
     return (
         <div className='dialog-container'>
-            <form className='form-container'  onSubmit={handleSubmitTask} >
+            <form className='form-container' onSubmit={handleSubmitTask} >
                 <h2 className='dialog-heading'>
                     Add Task Here
                 </h2>
@@ -66,9 +69,12 @@ const AddTaskModal = (props) => {
                 <div className='text-area'>
                     <label>Due</label>
                     <div className='input-box'>
-                    <DatePickers/>
+                        <DatePicker className='datePikar-box'
+                            autoComplete="off" selected={startDate}
+                            onChange={(date: Date) => setStartDate(date)}
+                        />
                     </div>
-               
+
                 </div>
                 <div className='text-area'>
                     <label>Status</label>

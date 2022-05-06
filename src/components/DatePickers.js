@@ -1,21 +1,16 @@
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-import React, { useState } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-
-function DatePickers () {
-  const [selectedDate, setSelectedDate] = useState(null)
+const DatePickers = () => {
+  const [startDate, setStartDate] = useState(new Date(2021, 0));
   return (
-    <div className='DatePicker' >
-      <DatePicker
+    <DatePicker
       className='datePikar-box'
-        onChange={date => setSelectedDate(date)}
-        placeholderText={'dd/mm/yyyy'}
-        filterDate={date => date.getDay() !== 7 && date.getDay() !== 0} 
-        scrollableYearDropdown
-      />
-     </div>
-  )
-}
-
+      autoComplete="off"
+      selected={startDate}
+      onChange={(date: Date) => setStartDate(date)}
+    />
+  );
+};
 export default DatePickers;

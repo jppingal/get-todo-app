@@ -1,9 +1,10 @@
 import { PinDropSharp } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
-import DatePickers from './DatePickers';
-// import DatePicker from "react-datepicker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const UpdateTaskModal = (props) => {
+    const [startDate, setStartDate] = useState(new Date(2021, 10))
     const [tasks, setTasks] = useState([])
     const [data, setData] = useState({
         title: props.data.title,
@@ -57,8 +58,10 @@ const UpdateTaskModal = (props) => {
                 <div className='text-area'>
                     <label>Due</label>
                     <div className='input-box'>
-                    <DatePickers/>
-                    </div>
+						<DatePicker className='datePikar-box'
+							autoComplete="off" selected={startDate}
+							onChange={(date: Date) => setStartDate(date)} />
+					</div>
                
                 </div>
                 <div className='text-area'>
