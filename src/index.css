@@ -186,15 +186,14 @@ textarea {
 
 .task-days {
   width: 100%;
-  padding: 5px
+  padding: 12px;
+  color:#4a7171
 }
 
 .task-details {
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
   align-items: center;
-
   margin-top: 10px;
   width: 100%;
   padding: 5px;
