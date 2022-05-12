@@ -7,6 +7,7 @@ const Home = () => {
 	const handleEditCallback = (childData) => {
 		setCallbackData(childData);
 	}
+	console.log("callbackData", callbackData);
 	const [callbackChecked, setCallbackChecked] = useState()
 	const handleCheckedTaskCallback = (checked) => {
 		setCallbackChecked(checked)

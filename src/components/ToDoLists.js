@@ -10,6 +10,12 @@ const getLocalItems = () => {
 		return [];
 	}
 }
+
+const Tasks = () => {
+	return (
+		<div>Sunday1</div>
+	)
+}
 const ToDoLists = (props) => {
 	const [item, setItem] = useState(getLocalItems())
 
@@ -34,33 +40,59 @@ const ToDoLists = (props) => {
 	useEffect(() => {
 		localStorage.setItem('TaskItems', JSON.stringify(item))
 	}, [item])
+
+	const days = item.map((item) => {
+		return (
+			item.due
+		)
+	})
+	let outputArray = Array.from(new Set(days))
+	console.log("item", outputArray[0]);
+
+	const map = {
+		'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6,
+		'Sunday': 7
+	};
+	outputArray.sort((a, b) => {
+		return map[a] - map[b];
+	});
+	console.log("xxxxx", outputArray)
 	return (
 		<div className='Tasks-container'>
-			{item.map((elem) => {
-				return (
-					<div className='Tasks' key={elem.id}>
-						<div className='task-days'>
-							<h3>{elem.due}</h3>
-						</div>
-						<div className='task-details' >
-							<span className='check-box'>
-								<input type="checkbox"
-									onClick={() => handleCheckToggle(elem.id)} />
-							</span>
-							<div className='task-box'>
-								<div className='task-title' >{elem.title} </div>
-								<div className='task-control'>
-									<EditIcon className='edit-task'
-										onClick={() => handleUpdate(elem.id)} />
-									<DeleteOutlineIcon className='delete-task' type="click" onClick={() => handleDeleteTask(elem.id)} />
+			{outputArray.map((days, index) => (
+
+				<div className='Tasks' key={index}>
+					<h3>{days}</h3>
+					{item.map((elem, index) => {
+						if (days === elem.due) {
+							return (
+								<div className='' key={index}>
+									<div className='task-details' >
+										<span className='check-box'>
+											<input type="checkbox"
+												onClick={() => handleCheckToggle(elem.id)} />
+										</span>
+										<div className='task-box'>
+											<div className='task-title' >{elem.title} </div>
+											<div className='task-control'>
+												<EditIcon className='edit-task'
+													onClick={() => handleUpdate(elem.id)} />
+												<DeleteOutlineIcon className='delete-task' type="click" onClick={() => handleDeleteTask(elem.id)} />
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-					</div>
-				)
-			}
+							)
+						}
+
+					}
+					)}
+				</div>
+			)
 			)}
 		</div>
+
 	)
+
 };
 export default ToDoLists;
