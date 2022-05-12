@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import DatePickers from './DatePickers';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays } from "date-fns";
 
 const getLocalItems = () => {
 	let getTasks = localStorage.getItem('TaskItems');
-	console.log(" update local data", getTasks);
+
 	if (getTasks) {
 		return JSON.parse(localStorage.getItem('TaskItems'))
 	} else {
@@ -14,35 +16,36 @@ const getLocalItems = () => {
 const AddTaskModal = (props) => {
 	const [tasks, setTasks] = useState(getLocalItems())
 	const [data, setData] = useState({
-		title: "",
 		description: "",
-		date: "",
-
+		title: "",
+		due: "",
 	})
-
-	let weekday = new Date().toLocaleString('en-us', { weekday: 'long' });
-	console.log('Weekday-okoo', weekday);
-
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
-		let weekday = new Date().toLocaleString('en-us', { weekday: 'long' });
-		setData({ ...data, weekday, [name]: value })
-
+		setData({
+			...data, [name]: value
+		})
 	}
 
-	const handleSubmitTask = (e) => {
-		console.log("data", data);
+	const handleTaskOnSubmit = (e) => {
 		e.preventDefault();
-		setTasks([...tasks, data])
+		const newRecord = {
+			id: new Date().getTime().toString(),
+			title: data.title,
+			description: data.description,
+			due: startDate.toLocaleString('en-us', { weekday: 'long' })
+		}
+		window.location.reload(true)
+		setTasks([...tasks, newRecord]);
 	}
 
 	useEffect(() => {
 		localStorage.setItem('TaskItems', JSON.stringify(tasks))
 	}, [tasks])
-
+	const [startDate, setStartDate] = useState(null);
 	return (
 		<div className='dialog-container'>
-			<form className='form-container' onSubmit={handleSubmitTask} >
+			<form className='form-container' onSubmit={handleTaskOnSubmit} >
 				<h2 className='dialog-heading'>
 					Add Task Here
 				</h2>
@@ -71,12 +74,20 @@ const AddTaskModal = (props) => {
 				<div className='text-area'>
 					<label>Due</label>
 					<div className='input-box'>
-						<DatePickers />
+						<DatePicker
+							className='datePikar-box'
+							selected={startDate}
+							onChange={(date) => setStartDate(date)}
+							maxDate={addDays(new Date(), -5)}
+							placeholderText="Select a date in 1to 7 days in the future"
+						/>
 					</div>
 				</div>
 				<div className='text-area'>
 					<label>Status</label>
-					<span className='task-status'>Pending</span>
+					<span className='task-toggle'>
+						<h4> Pending</h4>
+					</span>
 				</div>
 				<div className='form-control'>
 					<button className='btn cancel-btn'

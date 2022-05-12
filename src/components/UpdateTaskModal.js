@@ -1,36 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import DatePickers from './DatePickers';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays } from "date-fns";
 
 const getLocalItems = () => {
 	let getTasks = localStorage.getItem('TaskItems');
-	console.log(" update local data", getTasks);
+
 	if (getTasks) {
 		return JSON.parse(localStorage.getItem('TaskItems'))
 	} else {
 		return [];
 	}
 }
+
 const UpdateTaskModal = (props) => {
-	const [startDate, setStartDate] = useState(new Date(2021, 10))
+
 	const [tasks, setTasks] = useState(getLocalItems())
+
+	let result = tasks.filter((item) => item.id === props.taskData);
+	//console.log(result);
+
+	const [startDate, setStartDate] = useState(null)
+
 	const [data, setData] = useState({
-		title: tasks.title,
-		description: "",
-		day: ""
+		id: result[0]?.id,
+		title: result[0]?.title,
+		description: result[0]?.description,
 	})
+
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setData({ ...data, [name]: value })
-
 	}
+
 	const handleSubmitTask = (e) => {
 		e.preventDefault();
-		setTasks([...tasks, data])
-		console.log("data", tasks)
+		const newState = tasks.map(obj =>
+			obj.id === data.id ? { ...obj, title: data.title, description: data.description, due: startDate.toLocaleString('en-us', { weekday: 'long' }) } : obj
+		);
+		window.location.reload(true)
+		setTasks(newState)
 	}
-	// useEffect(() => {
-	// 	localStorage.setItem('TaskItems', JSON.stringify(tasks))
-	// }, [tasks])
+
+	useEffect(() => {
+		localStorage.setItem('TaskItems', JSON.stringify(tasks))
+	}, [tasks])
 
 	return (
 		<div className='dialog-container'>
@@ -43,7 +57,7 @@ const UpdateTaskModal = (props) => {
 					<input
 						className='input-box'
 						type="text"
-						defaultValue={tasks.title}
+						defaultValue={data.title}
 						name="title"
 						autoComplete='off'
 						onChange={handleInputChange}
@@ -55,7 +69,7 @@ const UpdateTaskModal = (props) => {
 					<textarea
 						className='input-box'
 						type="text"
-						defaultValue={props.data.title}
+						defaultValue={data.description}
 						name="description"
 						autoComplete='off'
 						onChange={handleInputChange}
@@ -65,13 +79,22 @@ const UpdateTaskModal = (props) => {
 				<div className='text-area'>
 					<label>Due</label>
 					<div className='input-box'>
-						<DatePickers />
+						<DatePicker
+							className='datePikar-box'
+							selected={startDate}
+							onChange={(date) => setStartDate(date)}
+							maxDate={addDays(new Date(), -5)}
+							placeholderText="Select a date in 1to 7 days in the future"
+						/>
 					</div>
-
 				</div>
 				<div className='text-area'>
 					<label>Status</label>
-					<span className='task-status'>Pending</span>
+					<span className='task-toggle'>
+						<h4>
+							{props.CheckedData ? "completed" : "Pending"}
+						</h4>
+					</span>
 				</div>
 				<div className='form-control'>
 					<button className='btn cancel-btn'
@@ -79,11 +102,11 @@ const UpdateTaskModal = (props) => {
 						onClick={() => props.onClose()}
 					>
 						Cancel</button>
-					<button className='btn add-btn' type='submit' >Add Update Task</button>
-
+					<button className='btn add-btn' type='submit' >
+						Add Update Task
+					</button>
 				</div>
 			</form>
-
 		</div>
 	)
 };
