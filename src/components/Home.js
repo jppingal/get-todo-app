@@ -8,12 +8,15 @@ const Home = () => {
 		setCallbackData(childData);
 	}
 	console.log("callbackData", callbackData);
-	const [callbackChecked, setCallbackChecked] = useState()
+
+	const [callbackChecked, setCallbackChecked] = useState();
+
 	const handleCheckedTaskCallback = (checked) => {
 		setCallbackChecked(checked)
 	}
 	const [addTaskModal, setAddTaskModal] = useState(false);
 	const [updateTaskModal, setUpdateTaskModal] = useState(false);
+	
 	return (
 		<div className='main'>
 			<div className='home-container'>
@@ -21,12 +24,14 @@ const Home = () => {
 					<span className='header-title'>To Do List</span>
 					<span className='add-task' onClick={() => setAddTaskModal(true)} >Add Task</span>
 				</header>
+				
 				<ToDoLists OnClickUpdate={() => setUpdateTaskModal(true)}
 					handleEditTaskCallback={handleEditCallback}
 					handleCheckedTaskCallback={handleCheckedTaskCallback}
 				/>
 				{!!addTaskModal && <AddTaskModal onClose={() => setAddTaskModal(false)} />}
-				{!!updateTaskModal && <UpdateTaskModal onClose={() => setUpdateTaskModal(false)} taskData={callbackData} CheckedData={callbackChecked} />
+				{!!updateTaskModal && <UpdateTaskModal onClose={() => setUpdateTaskModal(false)}
+				 taskData={callbackData} CheckedData={callbackChecked} />
 				}
 			</div>
 		</div>
